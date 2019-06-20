@@ -14,8 +14,7 @@
     Stripe.setPublishableKey('pk_live_lc0mlT8Gdy4YetGNkdMukCvG');
     document.getElementById('apple-pay-button').addEventListener('click', beginApplePay);
       
-    function beginApplePay() {
-      var paymentRequest = {
+    var paymentRequest = {
       countryCode: 'US',
       currencyCode: 'USD',
       total: {
@@ -45,7 +44,7 @@
     };
 
     session.begin();
-    });
+    }
   </script>
 
 </head>
