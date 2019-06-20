@@ -1,7 +1,6 @@
 /* CSS */
 @supports (-webkit-appearance: -apple-pay-button) {
     .apple-pay-button-with-text {
-        display: inline-block;
         -webkit-appearance: -apple-pay-button;
         -apple-pay-button-type: buy;
     }
