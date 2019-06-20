@@ -27,7 +27,7 @@
     var session = Stripe.applePay.buildSession(paymentRequest,
       function(result, completion) {
 
-      $.post('/charges', { token: result.token.id }).done(function() {
+      $.post('/charges.html', { token: result.token.id }).done(function() {
         completion(ApplePaySession.STATUS_FAILURE);
         //completion(ApplePaySession.STATUS_SUCCESS);
         // You can now redirect the user to a receipt page, etc.
