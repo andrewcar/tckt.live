@@ -8,6 +8,7 @@
         display: none;
     }
     .apple-pay-button-black-with-text {
+        -webkit-named-image(apple-pay-logo-white);
         -apple-pay-button-style: black;
     }
     .apple-pay-button-white-with-text {
