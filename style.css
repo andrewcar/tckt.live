@@ -61,6 +61,7 @@
         font-family: -apple-system;
         font-size: calc(1em * var(--apple-pay-scale));
         font-weight: 300;
+        height: 44px;
         align-self: center;
         margin-right: calc(2px * var(--apple-pay-scale));
     }
