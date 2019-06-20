@@ -12,10 +12,6 @@
   <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
   <script type="text/javascript">
     Stripe.setPublishableKey('pk_live_lc0mlT8Gdy4YetGNkdMukCvG');
-    Stripe.applePay.checkAvailability(function(available) {
-    if (available) {
-      document.getElementById('apple-pay-button').style.display = 'block';
-    }
     document.getElementById('apple-pay-button').addEventListener('click', beginApplePay);
       
     function beginApplePay() {
@@ -29,7 +25,7 @@
     };
       
     var session = Stripe.applePay.buildSession(paymentRequest,
-    function(result, completion) {
+      function(result, completion) {
 
       $.post('/charges.php', { token: result.token.id }).done(function() {
         completion(ApplePaySession.STATUS_SUCCESS);
@@ -48,8 +44,6 @@
     };
 
     session.begin();
-  }
-});
   </script>
 
 </head>
