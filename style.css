@@ -29,8 +29,9 @@
         padding: 0px;
         box-sizing: border-box;
         min-width: 200px;
-        min-height: 32px;
-        max-height: 64px;
+        height: 70px;
+/*         min-height: 44px;
+        max-height: 64px; */
     }
     .apple-pay-button-black-with-text {
         background-color: black;
@@ -61,6 +62,7 @@
         font-family: -apple-system;
         font-size: calc(1em * var(--apple-pay-scale));
         font-weight: 300;
+        height: 100%;
         align-self: center;
         margin-right: calc(2px * var(--apple-pay-scale));
     }
