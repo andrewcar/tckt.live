@@ -27,6 +27,16 @@
       paymentRequest: paymentRequest,
     });
 
+        elements.create('paymentRequestButton', {
+      paymentRequest: paymentRequest,
+      style: {
+        paymentRequestButton: {
+          type: 'buy',
+          theme: 'dark',
+          height: '64px',
+        },
+      },
+    });
     // Check the availability of the Payment Request API first
     paymentRequestButton.mount('#payment-request-button');
 
@@ -57,17 +67,6 @@
           ev.complete('fail');
         }
       });
-    });
-
-    elements.create('paymentRequestButton', {
-      paymentRequest: paymentRequest,
-      style: {
-        paymentRequestButton: {
-          type: 'buy',
-          theme: 'dark',
-          height: '64px',
-        },
-      },
     });
   </div>
   </script>
