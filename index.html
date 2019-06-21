@@ -6,86 +6,46 @@
   <br>
   <A HREF="privacypolicy">Privacy Policy</A>
   <br>
-  <script src="https://js.stripe.com/v3/"></script>
-  <script type="text/javascript">
-  <div id="payment-request-button">
-    var stripe = Stripe('pk_live_lc0mlT8Gdy4YetGNkdMukCvG');
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<div id="apple-pay-button" class="apple-pay-button-with-text apple-pay-button-black-with-text">
+</div>
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">
+  Stripe.setPublishableKey('pk_live_lc0mlT8Gdy4YetGNkdMukCvG');
+  document.getElementById('apple-pay-button').addEventListener('click', beginApplePay);
     
-    "use strict";
-
-    var elements = stripe.elements({
-      fonts: [{
-        cssSrc: "https://rsms.me/inter/inter-ui.css"
-      }],
-      // Stripe's examples are localized to specific languages, but if
-      // you wish to have Elements automatically detect your user's locale,
-      // use `locale: 'auto'` instead.
-      locale: window.__exampleLocale
-    });
-
-    /**
-    * Card Element
-    */
-    var card = elements.create("card", {
-      style: {
-        base: {
-          color: "#32325D",
-          fontWeight: 500,
-          fontFamily: "Inter UI, Open Sans, Segoe UI, sans-serif",
-          fontSize: "16px",
-          fontSmoothing: "antialiased",
-          "::placeholder": {
-            color: "#CFD7DF"
-          }
-        },
-        invalid: {
-          color: "#E25950"
-        }
-      }
-    });
-
-    card.mount("#example4-card");
-
-    /**
-    * Payment Request Element
-    */
-    var paymentRequest = stripe.paymentRequest({
-      country: "US",
-      currency: "usd",
+  function beginApplePay() {
+    var paymentRequest = {
+      countryCode: 'US',
+      currencyCode: 'USD',
       total: {
-        amount: 2000,
-        label: "Total"
+        label: 'Hoods',
+        amount: '19.99'
       }
-    });
-    paymentRequest.on("token", function(result) {
-      var example = document.querySelector(".example4");
-      example.querySelector(".token").innerText = result.token.id;
-      example.classList.add("submitted");
-      result.complete("success");
+    };
+    
+    var session = Stripe.applePay.buildSession(paymentRequest,
+      function(result, completion) {
+
+      $.post('/charges.html', { token: result.token.id }).done(function() {
+        completion(ApplePaySession.STATUS_SUCCESS);
+        // You can now redirect the user to a receipt page, etc.
+        //window.location.href = '/success.html';
+      }).fail(function() {
+        completion(ApplePaySession.STATUS_FAILURE);
+      });
+
+    }, function(error) {
+      console.log(error.message);
     });
 
-    var paymentRequestElement = elements.create("paymentRequestButton", {
-      paymentRequest: paymentRequest,
-      style: {
-        paymentRequestButton: {
-          type: "donate"
-        }
-      }
-    });
+    session.oncancel = function() {
+      console.log("User hit the cancel button in the payment window");
+    };
 
-    paymentRequest.canMakePayment().then(function(result) {
-      if (result) {
-        document.querySelector(".example4 .card-only").style.display = "none";
-        document.querySelector(
-          ".example4 .payment-request-available"
-        ).style.display = "block";
-        paymentRequestElement.mount("#example4-paymentRequest");
-      }
-    });
-
-    registerElements([card, paymentRequestElement], "example4");
-  </div>
-  </script>
+    session.begin();
+  }
+</script>
 
 
 </head>
