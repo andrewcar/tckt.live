@@ -7,11 +7,13 @@
   <A HREF="privacypolicy">Privacy Policy</A>
   <br>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-if (window.ApplePaySession) {
-  <div id="apple-pay-button" class="apple-pay-button-with-text apple-pay-button-black-with-text"></div>
-}
+<div id="apple-pay-button" class="apple-pay-button-with-text apple-pay-button-black-with-text"></div>
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script type="text/javascript">
+  if !(window.ApplePaySession) {
+    var applePayButton = document.getElementById('apple-pay-button');
+    applePayButton.style.display = 'none';
+  }
   Stripe.setPublishableKey('pk_live_lc0mlT8Gdy4YetGNkdMukCvG');
   document.getElementById('apple-pay-button').addEventListener('click', beginApplePay);
 
