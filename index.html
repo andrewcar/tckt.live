@@ -33,19 +33,18 @@
       },
     });
     
-            paymentRequestButton.mount('#payment-request-button');
-
     // Check the availability of the Payment Request API first
-//     paymentRequest.canMakePayment().then(function(result) {
-//       if (result) {
-//       } else {
-//         document.getElementById('payment-request-button').style.display = 'none';
-//       }
-//     });
+    paymentRequest.canMakePayment().then(function(result) {
+      if (result) {
+        paymentRequestButton.mount('#payment-request-button');
+      } else {
+        document.getElementById('payment-request-button').style.display = 'none';
+      }
+    });
     
     paymentRequest.on('token', function(ev) {
       // Send the token to your server to charge it!
-      fetch('/charges', {
+      fetch('/charges.html', {
         method: 'POST',
         body: JSON.stringify({token: ev.token.id}),
         headers: {'content-type': 'application/json'},
@@ -55,6 +54,7 @@
           // Report to the browser that the payment was successful, prompting
           // it to close the browser payment interface.
           ev.complete('success');
+          window.location.href = '/success.html';
         } else {
           // Report to the browser that the payment failed, prompting it to
           // re-show the payment interface, or show an error message and close
