@@ -10,14 +10,21 @@
 <div id="apple-pay-button" class="apple-pay-button-with-text apple-pay-button-black-with-text"></div>
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script type="text/javascript">
-  if (window.ApplePaySession) {
-    var applePayButton = document.getElementById('apple-pay-button');
-    applePayButton.style.display = 'none';
-  }
   Stripe.setPublishableKey('pk_live_lc0mlT8Gdy4YetGNkdMukCvG');
   document.getElementById('apple-pay-button').addEventListener('click', beginApplePay);
 
   function beginApplePay() {
+    
+    // Check the availability of the Payment Request API first
+    paymentRequest.canMakePaymentWithActiveCard('merchant.app.hoods.Tickets').then(function(result) {
+      if (result) {
+        var applePayButton = document.getElementById('apple-pay-button');
+        applePayButton.style.display = 'none';      
+      } else {
+        //document.getElementById('payment-request-button').style.display = 'none';
+      }
+    });
+  
     var paymentRequest = {
       countryCode: 'US',
       currencyCode: 'USD',
