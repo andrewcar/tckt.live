@@ -25,10 +25,6 @@
     var elements = stripe.elements();
     var paymentRequestButton = elements.create('paymentRequestButton', {
       paymentRequest: paymentRequest,
-    });
-
-        elements.create('paymentRequestButton', {
-      paymentRequest: paymentRequest,
       style: {
         paymentRequestButton: {
           type: 'buy',
@@ -37,17 +33,16 @@
         },
       },
     });
+    
     // Check the availability of the Payment Request API first
-    paymentRequestButton.mount('#payment-request-button');
-
-//     paymentRequest.canMakePayment().then(function(result) {
-//       if (result) {
-//         paymentRequestButton.mount('#payment-request-button');
-//       } else {
-//         document.getElementById('payment-request-button').style.display = 'none';
-//       }
-//     });
-
+    paymentRequest.canMakePayment().then(function(result) {
+      if (result) {
+        paymentRequestButton.mount('#payment-request-button');
+      } else {
+        document.getElementById('payment-request-button').style.display = 'none';
+      }
+    });
+    
     paymentRequest.on('token', function(ev) {
       // Send the token to your server to charge it!
       fetch('/charges', {
