@@ -7,12 +7,67 @@
   <A HREF="privacypolicy">Privacy Policy</A>
   <br>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <div class="apple-pay-button-with-text apple-pay-button-black-with-text">
+  <script src="https://js.stripe.com/v3/"></script>
+  <div id="payment-request-button">
+    <!-- A Stripe Element will be inserted here. -->
+    var stripe = Stripe('pk_live_lc0mlT8Gdy4YetGNkdMukCvG');
+    var paymentRequest = stripe.paymentRequest({
+      country: 'US',
+      currency: 'usd',
+      total: {
+        label: 'Hoods',
+        amount: 10,
+      },
+      requestPayerName: true,
+      requestPayerEmail: true
+    });
+    var elements = stripe.elements();
+    var paymentRequestButton = elements.create('paymentRequestButton', {
+      paymentRequest: paymentRequest,
+    });
+
+    // Check the availability of the Payment Request API first
+    paymentRequest.canMakePayment().then(function(result) {
+      if (result) {
+        paymentRequestButton.mount('#payment-request-button');
+      } else {
+        document.getElementById('payment-request-button').style.display = 'none';
+      }
+    });
+
+    paymentRequest.on('token', function(ev) {
+      // Send the token to your server to charge it!
+      fetch('/charges', {
+        method: 'POST',
+        body: JSON.stringify({token: ev.token.id}),
+        headers: {'content-type': 'application/json'},
+      })
+      .then(function(response) {
+        if (response.ok) {
+          // Report to the browser that the payment was successful, prompting
+          // it to close the browser payment interface.
+          ev.complete('success');
+        } else {
+          // Report to the browser that the payment failed, prompting it to
+          // re-show the payment interface, or show an error message and close
+          // the payment interface.
+          ev.complete('fail');
+        }
+      });
+    });
+
+    elements.create('paymentRequestButton', {
+      paymentRequest: paymentRequest,
+      style: {
+        paymentRequestButton: {
+          type: 'buy',
+          theme: 'dark',
+          height: '64px',
+        },
+      },
+    });
   </div>
-  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-  <script type="text/javascript">
-    Stripe.setPublishableKey('pk_live_lc0mlT8Gdy4YetGNkdMukCvG');
-  </script>
+
 
 </head>
 </html>
