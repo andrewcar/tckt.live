@@ -34,14 +34,15 @@
       },
     });
     
+            paymentRequestButton.mount('#payment-request-button');
+
     // Check the availability of the Payment Request API first
-    paymentRequest.canMakePayment().then(function(result) {
-      if (result) {
-        paymentRequestButton.mount('#payment-request-button');
-      } else {
-        document.getElementById('payment-request-button').style.display = 'none';
-      }
-    });
+//     paymentRequest.canMakePayment().then(function(result) {
+//       if (result) {
+//       } else {
+//         document.getElementById('payment-request-button').style.display = 'none';
+//       }
+//     });
     
     paymentRequest.on('token', function(ev) {
       // Send the token to your server to charge it!
