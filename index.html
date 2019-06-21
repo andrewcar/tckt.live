@@ -22,7 +22,7 @@
       requestPayerEmail: true
     });
     var elements = stripe.elements();
-    var paymentRequestButton = elements.create('payment-request-button', {
+    var paymentRequestButton = elements.create('paymentRequestButton', {
       paymentRequest: paymentRequest,
       style: {
         paymentRequestButton: {
