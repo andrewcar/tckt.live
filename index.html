@@ -17,11 +17,8 @@
     
     // Check the availability of the Payment Request API first
     paymentRequest.canMakePaymentWithActiveCard('merchant.app.hoods.Tickets').then(function(result) {
-      if (result) {
-        var applePayButton = document.getElementById('apple-pay-button');
-        applePayButton.style.display = 'none';      
-      } else {
-        //document.getElementById('payment-request-button').style.display = 'none';
+      if !(result) {
+        document.getElementById('payment-request-button').style.display = 'none';
       }
     });
   
