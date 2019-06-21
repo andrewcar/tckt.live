@@ -9,17 +9,37 @@
   <script src="https://js.stripe.com/v3/"></script>
   <script type="text/javascript">
   <div id="payment-request-button">
+    
     var stripe = Stripe('pk_live_lc0mlT8Gdy4YetGNkdMukCvG');
-    var paymentRequest = stripe.paymentRequest({
-      country: 'US',
-      currency: 'usd',
+    
+    
+    const supportedPaymentMethods = [{
+      supportedMethods: 'basic-card',
+    }];
+    const paymentDetails = {
       total: {
         label: 'Hoods',
-        amount: 10,
-      },
-      requestPayerName: true,
-      requestPayerEmail: true
-    });
+        amount: {
+          currency: 'USD',
+          value: 10
+        }
+      }
+    };
+    const options = {};
+    
+    var paymentRequest = stripe.paymentRequest(supportedPaymentMethods, paymentDetails, options);
+    paymentRequest.show();
+//     var paymentRequest = stripe.paymentRequest({
+//       country: 'US',
+//       currency: 'usd',
+//       total: {
+//         label: 'Hoods',
+//         amount: 10,
+//       },
+//       requestPayerName: true,
+//       requestPayerEmail: true
+//     });
+    
     var elements = stripe.elements();
     var paymentRequestButton = elements.create('paymentRequestButton', {
       paymentRequest: paymentRequest,
